@@ -3,10 +3,10 @@
 from abc import ABC, abstractmethod
 
 class PersistenceWrapperInterface(ABC):
-	"""Specifies persistance wrapper interface methods."""
+	"""Specifies persistence wrapper interface methods."""
 
-	def __init__(self, persistance_type: str):
-		self._persistance_type = str(persistance_type)
+	def __init__(self, persistence_type: str):
+		self._persistence_type = str(persistence_type)
 
 	@abstractmethod
 	def get_all_inventories(self):

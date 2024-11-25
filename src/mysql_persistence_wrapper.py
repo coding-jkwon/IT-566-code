@@ -1,10 +1,10 @@
 """Implements a MySQL Persistence Wrapper"""
 
 from persistence_wrapper_interface import PersistenceWrapperInterface
-#from mysql import connector
+from mysql import connector
 
 class MySQLPersistenceWrapper(PersistenceWrapperInterface):
-	"""Implements MySQL Persistance Wrapper"""
+	"""Implements MySQL Persistence Wrapper"""
 
 	def __init__(self):
 		"""Initializes """
@@ -24,6 +24,7 @@ class MySQLPersistenceWrapper(PersistenceWrapperInterface):
 		self._db_connection = self._initialize_database_connection(self.DB_CONFIG)
 
 
+
 	def get_all_inventories(self):
 		"""Returns a list of all rows in the inventories table"""
 		cursor = None
@@ -32,7 +33,7 @@ class MySQLPersistenceWrapper(PersistenceWrapperInterface):
 			cursor.execute(self.SELECT_ALL_INVENTORIES)
 			results = cursor.fetchall()
 		except Exception as e:
-			print(f'Exception in persistance wrapper: {e}')
+			print(f'Exception in persistence wrapper: {e}')
 		return results
 
 
@@ -44,7 +45,7 @@ class MySQLPersistenceWrapper(PersistenceWrapperInterface):
 			cursor.execute(self.SELECT_ALL_ITEMS_FOR_INVENTORY_ID, ([inventory_id]))
 			results = cursor.fetchall()
 		except Exception as e:
-			print(f'Exception in persistance wrapper: {e}')
+			print(f'Exception in persistence wrapper: {e}')
 		return results
 
 
