@@ -1,5 +1,5 @@
 """Implements application business logic."""
-#from persistence_wrapper_interface import PersistenceWrapperInterface
+from persistence_wrapper_interface import PersistenceWrapperInterface
 from mysql_persistence_wrapper import MySQLPersistenceWrapper
 import json
 

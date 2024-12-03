@@ -1,7 +1,7 @@
 """Implements a MySQL Persistence Wrapper"""
 
 from persistence_wrapper_interface import PersistenceWrapperInterface
-#from mysql import connector
+from mysql import connector
 
 class MySQLPersistenceWrapper(PersistenceWrapperInterface):
 	"""Implements MySQL Persistance Wrapper"""
@@ -11,6 +11,7 @@ class MySQLPersistenceWrapper(PersistenceWrapperInterface):
 		# Constants
 		self.SELECT_ALL_INVENTORIES = 'SELECT id, name, description FROM inventories'
 		self.INSERT = 'INSERT INTO items (inventory_id, item, count) VALUES(%s, %s, %s)'
+		self.INSERT_INV = 'INSERT INTO inventories (name, description, date) VALUES(%s, %s, %s)'
 		self.SELECT_ALL_ITEMS_FOR_INVENTORY_ID = 'SELECT id, inventory_id, item, count FROM items WHERE inventory_id = %s'
 
 		# Database Configuration Constants
@@ -32,7 +33,7 @@ class MySQLPersistenceWrapper(PersistenceWrapperInterface):
 			cursor.execute(self.SELECT_ALL_INVENTORIES)
 			results = cursor.fetchall()
 		except Exception as e:
-			print(f'Exception in persistance wrapper: {e}')
+			print(f'Exception in persistence wrapper: {e}')
 		return results
 
 
@@ -44,13 +45,22 @@ class MySQLPersistenceWrapper(PersistenceWrapperInterface):
 			cursor.execute(self.SELECT_ALL_ITEMS_FOR_INVENTORY_ID, ([inventory_id]))
 			results = cursor.fetchall()
 		except Exception as e:
-			print(f'Exception in persistance wrapper: {e}')
+			print(f'Exception in persistence wrapper: {e}')
 		return results
 
 
 	def create_inventory(self, name: str, description: str, date: str):
 		"""Insert new row into inventories table."""
-		pass
+		cursor = None
+		try:
+			cursor = self._db_connection.cursor()
+			#cursor.execute(self.INSERT_ROW)
+			cursor.execute(self.INSERT_INV, ([name, description, date]))
+			self._db_connection.commit()
+		except Exception as e:
+			print(f'Exception in persistence wrapper: {e}')
+		
+
 
 
 	def create_item(self, inventory_id: int, item: str, count: int):

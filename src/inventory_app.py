@@ -2,7 +2,9 @@
 
 from business_logic import BusinessLogic
 from prettytable import PrettyTable
+from datetime import datetime
 import os
+import uuid
 
 class InventoryApp():
 	"""Implements household inventory control features."""
@@ -33,7 +35,7 @@ class InventoryApp():
 		"""Display menu."""
 		print('\t\t\tHousehold Inventory Application')
 		print()
-		print('\t\t1. New Inventory (Not Implemented)')
+		print('\t\t1. New Inventory')
 		print('\t\t2. List Inventories')
 		print('\t\t3. Select Inventory')
 		print('\t\t4. List Inventory Items')
@@ -70,7 +72,14 @@ class InventoryApp():
 		self.clear_screen()
 		if __debug__:
 			print('new_inventory() method called...')
-		input('\n\nThis method is not yet implemented. Press any key to continue: ')
+		self.print_inventory_list(self._get_inventories())
+		adding_inventory = input('\n\nEnter new Inventory: ')
+		new_inv_description = input('\n\nEnter Description: ')
+		date = datetime.now()
+		self._add_inventory(adding_inventory, new_inv_description, date)
+		print("New Inventory Created")
+		input('\n\nPress any key to continue...')
+		
 		
 
 	def list_inventories(self):
@@ -128,7 +137,7 @@ class InventoryApp():
 		"""Add items to inventory."""
 		if __debug__:
 			print('add_items() method called...')
-		input('\n\vThis method is not yet implemented. Press any key to continue: ')
+		new_item = input('\n\nEnter Items for Inventory: ')
 
 
 	def start_application(self):
@@ -150,6 +159,15 @@ class InventoryApp():
 		for row in items_list:
 			t.add_row([row[0], row[1], row[2], row[3]])
 		print(t)
+
+	def _add_inventory(self, name, description, date):
+		try:
+			self.business_logic.create_new_inventory(name, description, date)
+		except Exception as e:
+			print("This Inventory cannot be created.")
+			pass
+
+
 
 
 
