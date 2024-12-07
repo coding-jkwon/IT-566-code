@@ -2,7 +2,9 @@
 
 from business_logic import BusinessLogic
 from prettytable import PrettyTable
+from datetime import datetime
 import os
+import uuid
 
 class InventoryApp():
 	"""Implements household inventory control features."""
@@ -33,11 +35,11 @@ class InventoryApp():
 		"""Display menu."""
 		print('\t\t\tHousehold Inventory Application')
 		print()
-		print('\t\t1. New Inventory (Not Implemented)')
+		print('\t\t1. New Inventory')
 		print('\t\t2. List Inventories')
 		print('\t\t3. Select Inventory')
 		print('\t\t4. List Inventory Items')
-		print('\t\t5. Add Items (Not Implemented)')
+		print('\t\t5. Add Items')
 		print('\t\t6. Exit')
 		print()
 
@@ -70,7 +72,14 @@ class InventoryApp():
 		self.clear_screen()
 		if __debug__:
 			print('new_inventory() method called...')
-		input('\n\nThis method is not yet implemented. Press any key to continue: ')
+		self.print_inventory_list(self._get_inventories())
+		adding_inventory = input('\n\nEnter new Inventory: ')
+		new_inv_description = input('\n\nEnter Description: ')
+		date = datetime.now()
+		self._add_inventory(adding_inventory, new_inv_description, date)
+		print("New Inventory Created")
+		input('\n\nPress any key to continue...')
+		
 		
 
 	def list_inventories(self):
@@ -108,12 +117,6 @@ class InventoryApp():
 			print(f'Exception in select_inventory() method: {e}')
 			
 		
-
-		
-		
-		
-
-
 	def list_inventory_items(self):
 		"""List inventory items for inventory id contained in self.active_inventory_id field."""
 		self.clear_screen()
@@ -126,9 +129,17 @@ class InventoryApp():
 
 	def add_items(self):
 		"""Add items to inventory."""
+		self.clear_screen()
 		if __debug__:
 			print('add_items() method called...')
-		input('\n\vThis method is not yet implemented. Press any key to continue: ')
+		inventory_list = self._get_inventories()
+		self.print_inventory_list(inv_list=inventory_list)
+		inventory_id = self.active_inventory_id = int(input('\n\nSelect inventory id from list: '))
+		new_item = input('\n\nEnter Item for Inventory: ')
+		item_description = input('\n\nEnter Item Amount: ')
+		self._add_items(inventory_id, new_item, item_description)
+		print("New Item Created")
+		input('\n\nPress any key to continue...')
 
 
 	def start_application(self):
@@ -150,6 +161,20 @@ class InventoryApp():
 		for row in items_list:
 			t.add_row([row[0], row[1], row[2], row[3]])
 		print(t)
+
+	def _add_inventory(self, name, description, date):
+		try:
+			self.business_logic.create_new_inventory(name, description, date)
+		except Exception as e:
+			print('This Inventory cannot be created.')
+			pass
+
+	def _add_items(self, inventory_id, item, count):
+		try:
+			self.business_logic.create_new_item(inventory_id, item, count)
+		except Exception as e:
+			print('This item cannot be added.')
+
 
 
 

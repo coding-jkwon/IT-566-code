@@ -6,7 +6,7 @@ class PersistenceWrapperInterface(ABC):
 	"""Specifies persistence wrapper interface methods."""
 
 	def __init__(self, persistence_type: str):
-		self._persistence_type = str(persistence_type)
+		self._persistance_type = str(persistence_type)
 
 	@abstractmethod
 	def get_all_inventories(self):
