@@ -39,7 +39,7 @@ class InventoryApp():
 		print('\t\t2. List Inventories')
 		print('\t\t3. Select Inventory')
 		print('\t\t4. List Inventory Items')
-		print('\t\t5. Add Items (Not Implemented)')
+		print('\t\t5. Add Items')
 		print('\t\t6. Exit')
 		print()
 
@@ -117,12 +117,6 @@ class InventoryApp():
 			print(f'Exception in select_inventory() method: {e}')
 			
 		
-
-		
-		
-		
-
-
 	def list_inventory_items(self):
 		"""List inventory items for inventory id contained in self.active_inventory_id field."""
 		self.clear_screen()
@@ -135,9 +129,17 @@ class InventoryApp():
 
 	def add_items(self):
 		"""Add items to inventory."""
+		self.clear_screen()
 		if __debug__:
 			print('add_items() method called...')
-		new_item = input('\n\nEnter Items for Inventory: ')
+		inventory_list = self._get_inventories()
+		self.print_inventory_list(inv_list=inventory_list)
+		inventory_id = self.active_inventory_id = int(input('\n\nSelect inventory id from list: '))
+		new_item = input('\n\nEnter Item for Inventory: ')
+		item_description = input('\n\nEnter Item Amount: ')
+		self._add_items(inventory_id, new_item, item_description)
+		print("New Item Created")
+		input('\n\nPress any key to continue...')
 
 
 	def start_application(self):
@@ -164,9 +166,14 @@ class InventoryApp():
 		try:
 			self.business_logic.create_new_inventory(name, description, date)
 		except Exception as e:
-			print("This Inventory cannot be created.")
+			print('This Inventory cannot be created.')
 			pass
 
+	def _add_items(self, inventory_id, item, count):
+		try:
+			self.business_logic.create_new_item(inventory_id, item, count)
+		except Exception as e:
+			print('This item cannot be added.')
 
 
 

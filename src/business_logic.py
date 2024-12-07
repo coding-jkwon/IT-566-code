@@ -58,6 +58,13 @@ class BusinessLogic():
 		except Exception as e:
 			print(f'Exception in business logic: {e}')
 		return query_results
-
-
+	
+	def create_new_item(self, inventory_id: str, item: str, count: str):
+		"""Adds a new item to the datastore."""
+		item_id = 0
+		try:
+			item_id = self._persistence_wrapper.create_item(inventory_id, item, count)
+		except Exception as e:
+			print(f'Exception in business logic: {e}')
+		return item_id
 	

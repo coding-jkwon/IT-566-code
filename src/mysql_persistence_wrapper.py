@@ -54,7 +54,6 @@ class MySQLPersistenceWrapper(PersistenceWrapperInterface):
 		cursor = None
 		try:
 			cursor = self._db_connection.cursor()
-			#cursor.execute(self.INSERT_ROW)
 			cursor.execute(self.INSERT_INV, ([name, description, date]))
 			self._db_connection.commit()
 		except Exception as e:
@@ -65,7 +64,14 @@ class MySQLPersistenceWrapper(PersistenceWrapperInterface):
 
 	def create_item(self, inventory_id: int, item: str, count: int):
 		"""Insert new row into items table for given inventory id"""
-		pass
+		cursor = None
+		try:
+			cursor = self._db_connection.cursor()
+			cursor.execute(self.INSERT, ([inventory_id, item, count]))
+			self._db_connection.commit()
+		except Exception as e:
+			print(f'Exception in persistence wrapper: {e}')
+		
 		
 		
 	def _initialize_database_connection(self, config):
